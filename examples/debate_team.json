@@ -1,0 +1,31 @@
+{
+  "name": "Debate Team",
+  "description": "A team of agents that debate topics from multiple perspectives",
+  "paradigm": "peer",
+  "model": "gpt-4",
+  "max_iterations": 15,
+  "tools": ["search", "calculator"],
+  "peers": [
+    {
+      "id": "proponent",
+      "role": "Argue in favor of the topic",
+      "system_prompt": "You are the proponent. Present strong arguments supporting the topic while acknowledging counterpoints."
+    },
+    {
+      "id": "opponent", 
+      "role": "Argue against the topic",
+      "system_prompt": "You are the opponent. Present strong arguments against the topic while acknowledging counterpoints."
+    },
+    {
+      "id": "moderator",
+      "role": "Facilitate discussion and synthesize",
+      "system_prompt": "You are the moderator. Facilitate fair debate, ensure both sides are heard, and help synthesize a balanced conclusion."
+    }
+  ],
+  "collaboration_strategy": "structured_debate",
+  "config": {
+    "rounds": 3,
+    "synthesis_interval": 1,
+    "consensus_threshold": 0.8
+  }
+}

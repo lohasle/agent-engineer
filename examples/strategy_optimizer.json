@@ -1,0 +1,42 @@
+{
+  "name": "Strategy Optimizer",
+  "description": "An evolutionary agent that continuously improves its strategies",
+  "paradigm": "evolutionary",
+  "model": "gpt-4",
+  "max_iterations": 100,
+  "tools": ["calculator", "api_call", "file_write"],
+  "evolution_config": {
+    "population_size": 10,
+    "elite_ratio": 0.1,
+    "mutation_rate": 0.2,
+    "crossover_rate": 0.8,
+    "convergence_threshold": 0.95,
+    "max_generations": 50
+  },
+  "genome_schema": {
+    "system_prompt": {
+      "type": "text",
+      "mutation": "perturb"
+    },
+    "temperature": {
+      "type": "float",
+      "range": [0.0, 1.0],
+      "mutation": "gaussian"
+    },
+    "max_tokens": {
+      "type": "int",
+      "range": [100, 4000],
+      "mutation": "uniform"
+    },
+    "strategy_params": {
+      "type": "dict",
+      "mutation": "adaptive"
+    }
+  },
+  "config": {
+    "fitness_function": "task_success_rate",
+    "selection_method": "tournament",
+    "crossover_method": "blend",
+    "mutation_method": "adaptive"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Project Manager",
+  "description": "A hierarchical agent for managing complex projects with multiple workers",
+  "paradigm": "hierarchical",
+  "model": "gpt-4",
+  "max_iterations": 30,
+  "tools": ["calendar", "email", "database", "file_write"],
+  "workers": [
+    {
+      "id": "researcher",
+      "name": "Research Worker",
+      "capabilities": ["web_search", "document_analysis", "information_synthesis"],
+      "system_prompt": "You are a research specialist. Find and analyze information efficiently."
+    },
+    {
+      "id": "developer",
+      "name": "Development Worker", 
+      "capabilities": ["code_generation", "code_review", "testing"],
+      "system_prompt": "You are a development specialist. Write clean, efficient code."
+    },
+    {
+      "id": "tester",
+      "name": "Quality Assurance Worker",
+      "capabilities": ["test_execution", "bug_reporting", "performance_analysis"],
+      "system_prompt": "You are a QA specialist. Ensure quality through thorough testing."
+    }
+  ],
+  "hierarchy_config": {
+    "manager_levels": 2,
+    "max_workers_per_manager": 5,
+    "task_distribution": "load_balanced",
+    "escalation_threshold": 3
+  },
+  "config": {
+    "task_decomposition": true,
+    "progress_monitoring": true,
+    "quality_gates": true,
+    "escalation_handling": true
+  }
+}

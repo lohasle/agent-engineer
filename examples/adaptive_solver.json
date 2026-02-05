@@ -1,0 +1,20 @@
+{
+  "name": "Adaptive Problem Solver",
+  "description": "An agent that learns from unexpected outcomes and improves over time",
+  "paradigm": "surprise",
+  "model": "gpt-4",
+  "max_iterations": 20,
+  "tools": ["calculator", "code_execute", "api_call"],
+  "learning_config": {
+    "learning_rate": 0.1,
+    "surprise_threshold": 0.7,
+    "adaptation_strategy": "incremental",
+    "memory_size": 100
+  },
+  "config": {
+    "expected_outcome_tracking": true,
+    "surprise_analysis": true,
+    "strategy_adaptation": true,
+    "model_updates": true
+  }
+}

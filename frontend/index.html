@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Engineer - Create Intelligent Agents</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: #fff;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
+        .logo span {
+            color: #64748b;
+        }
+        
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        nav a:hover {
+            color: #2563eb;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+        
+        .sidebar {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .paradigm-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .paradigm-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .paradigm-card:hover {
+            border-color: #2563eb;
+            background: #f8fafc;
+        }
+        
+        .paradigm-card.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        
+        .paradigm-card h3 {
+            font-size: 16px;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+        
+        .paradigm-card p {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        .paradigm-card .complexity {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .complexity.low {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .complexity.medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .complexity.high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .tool-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tool-option:hover {
+            border-color: #2563eb;
+        }
+        
+        .tool-option.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        
+        .tool-option input {
+            width: auto;
+        }
+        
+        .tool-option label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .graph-preview {
+            background: #1e293b;
+            border-radius: 10px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+        
+        .graph-preview svg {
+            width: 100%;
+            height: 300px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .code-preview {
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .code-preview pre {
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .status-badge.success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .status-badge.error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .example-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-card:hover {
+            border-color: #2563eb;
+            background: #f8fafc;
+        }
+        
+        .example-card h4 {
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+        
+        .example-card p {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Agent<span>Engineer</span></div>
+            <nav>
+                <a href="#" onclick="showModal('examplesModal')">Examples</a>
+                <a href="#" onclick="showModal('docsModal')">Documentation</a>
+                <a href="#">API</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-grid">
+            <aside class="sidebar">
+                <h2>Select Paradigm</h2>
+                <div class="paradigm-list">
+                    <div class="paradigm-card selected" data-paradigm="react" onclick="selectParadigm(this)">
+                        <h3>React</h3>
+                        <p>Standard think-act-observe loop for reasoning</p>
+                        <span class="complexity low">Beginner</span>
+                    </div>
+                    <div class="paradigm-card" data-paradigm="surprise" onclick="selectParadigm(this)">
+                        <h3>Surprise</h3>
+                        <p>Self-improving agent that learns from unexpected outcomes</p>
+                        <span class="complexity medium">Intermediate</span>
+                    </div>
+                    <div class="paradigm-card" data-paradigm="peer" onclick="selectParadigm(this)">
+                        <h3>Peer</h3>
+                        <p>Multi-agent collaboration through debate and synthesis</p>
+                        <span class="complexity medium">Intermediate</span>
+                    </div>
+                    <div class="paradigm-card" data-paradigm="hierarchical" onclick="selectParadigm(this)">
+                        <h3>Hierarchical</h3>
+                        <p>Manager-worker structure for task distribution</p>
+                        <span class="complexity high">Advanced</span>
+                    </div>
+                    <div class="paradigm-card" data-paradigm="evolutionary" onclick="selectParadigm(this)">
+                        <h3>Evolutionary</h3>
+                        <p>Population-based evolution for continuous improvement</p>
+                        <span class="complexity high">Advanced</span>
+                    </div>
+                </div>
+            </aside>
+            
+            <main class="content">
+                <div class="card">
+                    <h2>Agent Configuration</h2>
+                    <form id="agentForm">
+                        <div class="form-group">
+                            <label for="agentName">Agent Name</label>
+                            <input type="text" id="agentName" placeholder="e.g., Research Assistant" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="agentDescription">Description</label>
+                            <textarea id="agentDescription" placeholder="Describe what your agent does..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="model">Language Model</label>
+                            <select id="model">
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                <option value="claude-3-opus">Claude 3 Opus</option>
+                                <option value="claude-3-sonnet">Claude 3 Sonnet</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="maxIterations">Max Iterations</label>
+                            <input type="number" id="maxIterations" value="10" min="1" max="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Tools</label>
+                            <div class="tools-grid">
+                                <label class="tool-option">
+                                    <input type="checkbox" value="search">
+                                    <span>🔍 Web Search</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" value="browser">
+                                    <span>🌐 Browser</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" value="calculator">
+                                    <span>🧮 Calculator</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" value="file_read">
+                                    <span>📁 File Read</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" value="file_write">
+                                    <span>✏️ File Write</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" value="code_execute">
+                                    <span>💻 Code Execute</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" value="api_call">
+                                    <span>🔗 API Call</span>
+                                </label>
+                                <label class="tool-option">
+                                    <input type="checkbox" value="database">
+                                    <span>🗄️ Database</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="systemPrompt">System Prompt</label>
+                            <textarea id="systemPrompt" placeholder="Define your agent's behavior and personality..."></textarea>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="generateAgent()">
+                                Generate Agent
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="previewGraph()">
+                                Preview Graph
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="testAgent()">
+                                Test Agent
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h2>Graph Preview</h2>
+                    <div class="graph-preview" id="graphPreview">
+                        <p>Select a paradigm and click "Preview Graph" to see the agent structure</p>
+                    </div>
+                </div>
+                
+                <div class="card" id="codeCard" style="display: none;">
+                    <h2>Generated Code</h2>
+                    <div class="code-preview">
+                        <pre id="codeOutput"></pre>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" onclick="downloadCode()">
+                            Download Code
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="copyCode()">
+                            Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Examples Modal -->
+    <div class="modal" id="examplesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Example Agents</h2>
+                <button class="modal-close" onclick="hideModal('examplesModal')">&times;</button>
+            </div>
+            <div class="examples-grid">
+                <div class="example-card" onclick="loadExample('research_agent')">
+                    <h4>🔍 Research Agent</h4>
+                    <p>An agent that researches topics and writes reports</p>
+                </div>
+                <div class="example-card" onclick="loadExample('debate_team')">
+                    <h4>💬 Debate Team</h4>
+                    <p>Multiple agents debating a topic</p>
+                </div>
+                <div class="example-card" onclick="loadExample('adaptive_solver')">
+                    <h4>🧠 Adaptive Solver</h4>
+                    <p>An agent that learns from its mistakes</p>
+                </div>
+                <div class="example-card" onclick="loadExample('project_manager')">
+                    <h4>📋 Project Manager</h4>
+                    <p>Hierarchical agent for managing tasks</p>
+                </div>
+                <div class="example-card" onclick="loadExample('optimizer')">
+                    <h4>⚡ Strategy Optimizer</h4>
+                    <p>Evolutionary agent that improves over time</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Documentation Modal -->
+    <div class="modal" id="docsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Documentation</h2>
+                <button class="modal-close" onclick="hideModal('docsModal')">&times;</button>
+            </div>
+            <h3>Getting Started</h3>
+            <p>Agent Engineer allows you to create intelligent agents using simple configurations. Select a paradigm, configure your agent, and generate LangGraph code automatically.</p>
+            
+            <h3 style="margin-top: 20px;">Paradigms</h3>
+            <ul>
+                <li><strong>React:</strong> Best for single-agent sequential tasks</li>
+                <li><strong>Surprise:</strong> Ideal for adaptive learning systems</li>
+                <li><strong>Peer:</strong> Great for collaborative problem-solving</li>
+                <li><strong>Hierarchical:</strong> Perfect for complex workflows</li>
+                <li><strong>Evolutionary:</strong> Best for optimization problems</li>
+            </ul>
+            
+            <h3 style="margin-top: 20px;">API</h3>
+            <p>Use the REST API to integrate agent generation into your applications:</p>
+            <pre style="background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+POST /api/generate
+{
+  "name": "My Agent",
+  "description": "An agent that...",
+  "paradigm": "react",
+  "tools": ["search", "browser"]
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        let selectedParadigm = 'react';
+        let generatedCode = '';
+        
+        function selectParadigm(element) {
+            document.querySelectorAll('.paradigm-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedParadigm = element.dataset.paradigm;
+        }
+        
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+        
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function generateAgent() {
+            const name = document.getElementById('agentName').value;
+            const description = document.getElementById('agentDescription').value;
+            const model = document.getElementById('model').value;
+            const maxIterations = document.getElementById('maxIterations').value;
+            const systemPrompt = document.getElementById('systemPrompt').value;
+            
+            const tools = [];
+            document.querySelectorAll('.tool-option input:checked').forEach(cb => {
+                tools.push(cb.value);
+            });
+            
+            const config = {
+                name,
+                description,
+                paradigm: selectedParadigm,
+                model,
+                max_iterations: parseInt(maxIterations),
+                tools,
+                system_prompt: systemPrompt
+            };
+            
+            // Generate code (simulated for frontend-only version)
+            generatedCode = generateCodeFromConfig(config);
+            
+            document.getElementById('codeCard').style.display = 'block';
+            document.getElementById('codeOutput').textContent = generatedCode;
+        }
+        
+        function generateCodeFromConfig(config) {
+            return `"""
+${config.name}
+${config.description}
+
+Generated by Agent Engineer
+Paradigm: ${config.paradigm}
+"""
+
+from typing import Any, Dict, List
+from langgraph.graph import StateGraph, END
+from langchain_openai import ChatOpenAI
+
+
+# Configuration
+AGENT_CONFIG = ${JSON.stringify(config, null, 2)}
+
+
+# Initialize LLM
+llm = ChatOpenAI(model="${config.model}", temperature=0.7)
+
+
+# Define state
+class AgentState(Dict):
+    messages: List[Dict[str, Any]]
+    context: Dict[str, Any]
+    iteration: int
+
+
+# Node functions
+def think(state: AgentState) -> AgentState:
+    """Think node implementation."""
+    return state
+
+
+def act(state: AgentState) -> AgentState:
+    """Act node implementation."""
+    return state
+
+
+def observe(state: AgentState) -> AgentState:
+    """Observe node implementation."""
+    return state
+
+
+# Build graph
+def build_graph():
+    workflow = StateGraph(AgentState)
+    workflow.add_node("think", think)
+    workflow.add_node("act", act)
+    workflow.add_node("observe", observe)
+    
+    workflow.set_entry_point("think")
+    workflow.add_edge("think", "act")
+    workflow.add_edge("act", "observe")
+    workflow.add_edge("observe", END)
+    
+    return workflow.compile()
+
+
+async def run_agent(input_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Run the agent."""
+    graph = build_graph()
+    initial_state = {
+        "messages": [],
+        "context": input_data,
+        "iteration": 0
+    }
+    return await graph.ainvoke(initial_state)
+
+
+if __name__ == "__main__":
+    import asyncio
+    result = asyncio.run(run_agent({"task": "Your task here"}))
+    print(result)
+`;
+        }
+        
+        function previewGraph() {
+            const graphDiv = document.getElementById('graphPreview');
+            
+            const graphs = {
+                react: `
+                    <svg viewBox="0 0 400 200">
+                        <rect x="150" y="20" width="100" height="40" rx="8" fill="#2563eb"/>
+                        <text x="200" y="45" text-anchor="middle" fill="white" font-size="12">THINK</text>
+                        <path d="M200 60 L200 85" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+                        
+                        <rect x="150" y="85" width="100" height="40" rx="8" fill="#7c3aed"/>
+                        <text x="200" y="110" text-anchor="middle" fill="white" font-size="12">ACT</text>
+                        <path d="M200 125 L200 150" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+                        
+                        <rect x="150" y="150" width="100" height="40" rx="8" fill="#059669"/>
+                        <text x="200" y="175" text-anchor="middle" fill="white" font-size="12">OBSERVE</text>
+                        
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                `,
+                surprise: `
+                    <svg viewBox="0 0 500 200">
+                        <rect x="200" y="20" width="100" height="40" rx="8" fill="#2563eb"/>
+                        <text x="250" y="45" text-anchor="middle" fill="white" font-size="12">THINK</text>
+                        <path d="M250 60 L250 85" stroke="#94a3b8" stroke-width="2"/>
+                        
+                        <rect x="200" y="85" width="100" height="40" rx="8" fill="#7c3aed"/>
+                        <text x="250" y="110" text-anchor="middle" fill="white" font-size="12">ACT</text>
+                        <path d="M250 125 L250 150" stroke="#94a3b8" stroke-width="2"/>
+                        
+                        <rect x="200" y="150" width="100" height="40" rx="8" fill="#059669"/>
+                        <text x="250" y="175" text-anchor="middle" fill="white" font-size="12">OBSERVE</text>
+                        
+                        <rect x="50" y="150" width="100" height="40" rx="8" fill="#f59e0b"/>
+                        <text x="100" y="175" text-anchor="middle" fill="white" font-size="12">SURPRISE?</text>
+                        
+                        <path d="M300 170 L360 170 L360 40 L300 40" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+                        <text x="330" y="30" text-anchor="middle" fill="#64748b" font-size="11">ADAPT</text>
+                    </svg>
+                `,
+                peer: `
+                    <svg viewBox="0 0 500 200">
+                        <rect x="200" y="80" width="100" height="40" rx="8" fill="#2563eb"/>
+                        <text x="250" y="105" text-anchor="middle" fill="white" font-size="12">COORDINATE</text>
+                        
+                        <circle cx="100" cy="50" r="30" fill="#7c3aed"/>
+                        <text x="100" y="55" text-anchor="middle" fill="white" font-size="10">PEER 1</text>
+                        
+                        <circle cx="250" cy="50" r="30" fill="#7c3aed"/>
+                        <text x="250" y="55" text-anchor="middle" fill="white" font-size="10">PEER 2</text>
+                        
+                        <circle cx="400" cy="50" r="30" fill="#7c3aed"/>
+                        <text x="400" y="55" text-anchor="middle" fill="white" font-size="10">PEER 3</text>
+                        
+                        <path d="M200 80 L100 80 L100 50" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M200 80 L250 80 L250 50" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M200 80 L400 80 L400 50" stroke="#94a3b8" stroke-width="2"/>
+                        
+                        <rect x="200" y="150" width="100" height="40" rx="8" fill="#059669"/>
+                        <text x="250" y="175" text-anchor="middle" fill="white" font-size="12">SYNTHESIZE</text>
+                        
+                        <path d="M100 80 L100 120 L200 120 L200 150" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M250 80 L250 120 L200 120" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M400 80 L400 120 L300 120 L300 150" stroke="#94a3b8" stroke-width="2"/>
+                    </svg>
+                `,
+                hierarchical: `
+                    <svg viewBox="0 0 500 250">
+                        <rect x="200" y="20" width="100" height="40" rx="8" fill="#2563eb"/>
+                        <text x="250" y="45" text-anchor="middle" fill="white" font-size="12">MANAGER</text>
+                        
+                        <rect x="50" y="100" width="80" height="35" rx="6" fill="#7c3aed"/>
+                        <text x="90" y="122" text-anchor="middle" fill="white" font-size="10">WORKER 1</text>
+                        
+                        <rect x="210" y="100" width="80" height="35" rx="6" fill="#7c3aed"/>
+                        <text x="250" y="122" text-anchor="middle" fill="white" font-size="10">WORKER 2</text>
+                        
+                        <rect x="370" y="100" width="80" height="35" rx="6" fill="#7c3aed"/>
+                        <text x="410" y="122" text-anchor="middle" fill="white" font-size="10">WORKER 3</text>
+                        
+                        <path d="M250 60 L90 100" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M250 60 L250 100" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M250 60 L410 100" stroke="#94a3b8" stroke-width="2"/>
+                        
+                        <rect x="200" y="180" width="100" height="40" rx="8" fill="#059669"/>
+                        <text x="250" y="205" text-anchor="middle" fill="white" font-size="12">AGGREGATE</text>
+                        
+                        <path d="M90 135 L90 150 L200 150 L200 180" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M250 135 L250 180" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M410 135 L410 150 L300 150 L300 180" stroke="#94a3b8" stroke-width="2"/>
+                    </svg>
+                `,
+                evolutionary: `
+                    <svg viewBox="0 0 500 200">
+                        <rect x="20" y="80" width="100" height="40" rx="8" fill="#2563eb"/>
+                        <text x="70" y="105" text-anchor="middle" fill="white" font-size="11">INIT</text>
+                        
+                        <rect x="150" y="80" width="100" height="40" rx="8" fill="#7c3aed"/>
+                        <text x="200" y="105" text-anchor="middle" fill="white" font-size="11">EVALUATE</text>
+                        
+                        <rect x="280" y="80" width="100" height="40" rx="8" fill="#f59e0b"/>
+                        <text x="330" y="105" text-anchor="middle" fill="white" font-size="11">SELECT</text>
+                        
+                        <rect x="410" y="80" width="80" height="40" rx="8" fill="#059669"/>
+                        <text x="450" y="105" text-anchor="middle" fill="white" font-size="11">MUTATE</text>
+                        
+                        <path d="M120 100 L150 100" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M250 100 L280 100" stroke="#94a3b8" stroke-width="2"/>
+                        <path d="M380 100 L410 100" stroke="#94a3b8" stroke-width="2"/>
+                        
+                        <path d="M450 120 L450 150 L150 150 L150 120" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+                        <text x="300" y="170" text-anchor="middle" fill="#64748b" font-size="10">Loop until convergence</text>
+                    </svg>
+                `
+            };
+            
+            graphDiv.innerHTML = graphs[selectedParadigm] || graphs.react;
+        }
+        
+        function testAgent() {
+            alert('Agent testing would execute the generated agent. In a full implementation, this would connect to the backend API.');
+        }
+        
+        function downloadCode() {
+            const blob = new Blob([generatedCode], { type: 'text/python' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'agent.py';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function copyCode() {
+            navigator.clipboard.writeText(generatedCode).then(() => {
+                alert('Code copied to clipboard!');
+            });
+        }
+        
+        function loadExample(exampleId) {
+            const examples = {
+                research_agent: {
+                    name: 'Research Assistant',
+                    description: 'An agent that researches topics and writes comprehensive reports',
+                    paradigm: 'react',
+                    tools: ['search', 'browser', 'file_write'],
+                    system_prompt: 'You are a thorough research assistant. You always verify information from multiple sources and provide well-cited reports.'
+                },
+                debate_team: {
+                    name: 'Debate Team',
+                    description: 'A team of agents that debate topics from multiple perspectives',
+                    paradigm: 'peer',
+                    tools: ['search', 'calculator'],
+                    system_prompt: 'You are part of a debate team. Present compelling arguments while considering opposing viewpoints.'
+                },
+                adaptive_solver: {
+                    name: 'Adaptive Problem Solver',
+                    description: 'An agent that learns from unexpected outcomes and improves over time',
+                    paradigm: 'surprise',
+                    tools: ['calculator', 'code_execute'],
+                    system_prompt: 'You are an adaptive problem solver. When things don\'t go as expected, you analyze why and adjust your approach.'
+                },
+                project_manager: {
+                    name: 'Project Manager',
+                    description: 'A hierarchical agent for managing complex projects with multiple workers',
+                    paradigm: 'hierarchical',
+                    tools: ['calendar', 'email', 'database'],
+                    system_prompt: 'You are an experienced project manager. You break down tasks, delegate effectively, and ensure quality delivery.'
+                },
+                optimizer: {
+                    name: 'Strategy Optimizer',
+                    description: 'An evolutionary agent that continuously improves its strategies',
+                    paradigm: 'evolutionary',
+                    tools: ['calculator', 'api_call'],
+                    system_prompt: 'You are an evolutionary optimizer. You continuously evaluate and improve your strategies based on results.'
+                }
+            };
+            
+            const example = examples[exampleId];
+            if (example) {
+                document.getElementById('agentName').value = example.name;
+                document.getElementById('agentDescription').value = example.description;
+                document.getElementById('systemPrompt').value = example.system_prompt;
+                
+                document.querySelectorAll('.tool-option input').forEach(cb => {
+                    cb.checked = example.tools.includes(cb.value);
+                });
+                
+                selectParadigm(document.querySelector(`[data-paradigm="${example.paradigm}"]`));
+                hideModal('examplesModal');
+            }
+        }
+        
+        // Initialize graph preview
+        previewGraph();
+    </script>
+</body>
+</html>
