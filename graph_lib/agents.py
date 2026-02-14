@@ -252,8 +252,8 @@ class ManagerAgent(BaseAgent):
                     task_info["status"] = "completed"
         return {"action": "delegate", "results": results}
     
-    async def observe(self, action_result: Dict[str,[str, Any]:
-        """Process Any]) -> Dict worker results."""
+    async def observe(self, action_result: Dict[str, Any]) -> Dict[str, Any]:
+        """Process worker results."""
         self.results.update(action_result.get("results", {}))
         return {"results": self.results}
     

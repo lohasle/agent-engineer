@@ -82,3 +82,31 @@ dmypy.json
 secrets/
 .secrets/
 credentials.json
+
+# Ruff
+.ruff_cache/
+
+# Distribution
+dist/
+*.whl
+
+# AI/ML
+*.h5
+*.pkl
+*.pickle
+models/
+checkpoints/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+
+# Generated code
+generated_agents/
+output/
