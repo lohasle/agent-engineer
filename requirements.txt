@@ -1,0 +1,17 @@
+# Agent Engineer - Python Dependencies
+# Core dependencies
+langgraph>=0.0.20
+langchain>=0.1.0
+langchain-openai>=0.0.2
+openai>=1.0.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# Server dependencies
+flask>=2.3.0
+flask-cors>=4.0.0
+
+# Development dependencies
+pytest>=7.0.0
+black>=23.0.0
+mypy>=1.0.0
